@@ -81,6 +81,7 @@ footer a{color:inherit}
 .splash-card{background:var(--sheet);border:1.5px solid var(--ink);padding:26px;width:min(440px,100%);display:grid;gap:12px}
 .splash-card h2{font-family:var(--display);font-stretch:72%;font-weight:850;font-size:2.4rem;line-height:.95;margin:0;text-transform:uppercase}
 .splash-card p{margin:0;color:var(--muted)}
+.splash-card .pitch{color:var(--ink);font-size:1.15rem;line-height:1.4}
 .splash-card label{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.82rem}
 .splash-card input{font:inherit;font-size:1.1rem;padding:10px 12px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink)}
 .splash-card input:focus-visible{outline:3px solid var(--mark);outline-offset:1px}
@@ -148,7 +149,7 @@ button.link{background:none;border:0;padding:0;color:inherit;text-decoration:und
   <form class="splash-card" id="splashForm" novalidate>
     <span class="eyebrow">Election Day · Tuesday, Nov. 3, 2026</span>
     <h2>Midterm Money Board</h2>
-    <p>Call the 20 most expensive races of the 2026 midterms. Submit all 20 picks to see everyone else’s.</p>
+    <p class="pitch">Make picks on the top 20 races in the country. Person with the most right gets $20.</p>
     <label for="nameIn">Your name</label>
     <input id="nameIn" name="name" maxlength="40" autocomplete="nickname" placeholder="First name or nickname">
     <p class="err" id="splashErr" aria-live="polite"></p>
@@ -179,12 +180,12 @@ button.link{background:none;border:0;padding:0;color:inherit;text-decoration:und
   </div>
 
   <nav class="tabs" role="tablist" aria-label="View">
-    <button class="tab" role="tab" id="tab-summary" aria-controls="summaryView" aria-selected="true" type="button" data-v="summary">Summary</button>
-    <button class="tab" role="tab" id="tab-races" aria-controls="racesView" aria-selected="false" type="button" data-v="races">Races</button>
+    <button class="tab" role="tab" id="tab-races" aria-controls="racesView" aria-selected="true" type="button" data-v="races">Races</button>
+    <button class="tab" role="tab" id="tab-summary" aria-controls="summaryView" aria-selected="false" type="button" data-v="summary">Summary</button>
     <button class="tab" role="tab" id="tab-group" aria-controls="groupView" aria-selected="false" type="button" data-v="group">Group picks</button>
   </nav>
 
-  <section id="summaryView" role="tabpanel" aria-labelledby="tab-summary" class="summary">
+  <section id="summaryView" role="tabpanel" aria-labelledby="tab-summary" class="summary" hidden>
     <div class="verdict">
       <span class="eyebrow">Senate control in the 120th Congress, based on your picks</span>
       <h2 id="verdict">Republicans keep control</h2>
@@ -222,7 +223,7 @@ button.link{background:none;border:0;padding:0;color:inherit;text-decoration:und
     <p class="hint" id="gHint">Your picks save to this board automatically as you fill in ovals on the Races tab. Each person can change only their own row.</p>
   </section>
 
-  <section id="racesView" role="tabpanel" aria-labelledby="tab-races" hidden>
+  <section id="racesView" role="tabpanel" aria-labelledby="tab-races">
   <div class="filters" role="group" aria-label="Filter by office">
     <button class="btn" type="button" data-f="all" aria-pressed="true">All 20</button>
     <button class="btn" type="button" data-f="Senate" aria-pressed="false">Senate</button>
@@ -360,7 +361,7 @@ document.getElementById('summaryView').addEventListener('click',e=>{
   showView('races'); document.getElementById(a.dataset.goto).scrollIntoView({behavior:'smooth',block:'start'});
 });
 const RACE_IDS=RACES.map(r=>r.id);
-function fromHash(){const h=location.hash.slice(1); if(h==='group'){showView('group');} else if(h==='races'||RACE_IDS.includes(h)){showView('races'); if(RACE_IDS.includes(h)) document.getElementById(h).scrollIntoView();} else showView('summary');}
+function fromHash(){const h=location.hash.slice(1); if(h==='group'){showView('group');} else if(h==='summary'){showView('summary');} else {showView('races'); if(RACE_IDS.includes(h)) document.getElementById(h).scrollIntoView();}}
 window.addEventListener('hashchange',fromHash);
 
 // ---------- Group picks (hosted API) ----------
